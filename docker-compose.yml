@@ -1,0 +1,7 @@
+services:
+  pawse:
+    build: .
+    container_name: pawse
+    restart: unless-stopped
+    ports:
+      - "8080:80"   # visit http://your-vps-ip:8080  (put a reverse proxy in front for a domain + HTTPS)

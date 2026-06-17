@@ -1,0 +1,252 @@
+@font-face {
+  font-family: "PixelMC";
+  src: url("fonts/PressStart2P.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --stone:      #8a8a8a;
+  --stone-lt:   #b6b6b6;
+  --stone-dk:   #4f4f4f;
+  --panel:      #c6c6c6;
+  --outline:    #1d1d1d;
+  --txt-light:  #f4f4f4;
+  --txt-shadow: #3a3a3a;
+  --grass:      #6ab04c;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: "PixelMC", "Courier New", monospace;
+  color: var(--txt-light);
+  image-rendering: pixelated;
+  /* classic Minecraft darkened "dirt" menu backdrop */
+  background-color: #4a3420;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.58)),
+    repeating-conic-gradient(#5a4028 0% 25%, #46321f 0% 50%);
+  background-size: auto, 36px 36px;
+}
+
+#app { min-height: 100%; }
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+.hidden { display: none !important; }
+
+/* ---------- shared Minecraft chrome ---------- */
+.btn-primary, .btn-treat, .menu-item, .icon-btn {
+  font-family: "PixelMC", monospace;
+  color: var(--txt-light);
+  text-shadow: 2px 2px 0 var(--txt-shadow);
+  background: var(--stone);
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    inset 3px 3px 0 var(--stone-lt),
+    inset -3px -3px 0 var(--stone-dk),
+    0 0 0 3px var(--outline);
+  image-rendering: pixelated;
+}
+.btn-primary:hover, .btn-treat:hover:not(:disabled), .menu-item:hover, .icon-btn:hover {
+  background: #9a9a9a;
+  color: #ffffcf;
+  box-shadow:
+    inset 3px 3px 0 #c9d6ff,
+    inset -3px -3px 0 #56566f,
+    0 0 0 3px var(--outline);
+}
+.btn-primary:active, .btn-treat:active:not(:disabled), .menu-item:active {
+  box-shadow:
+    inset -3px -3px 0 var(--stone-lt),
+    inset 3px 3px 0 var(--stone-dk),
+    0 0 0 3px var(--outline);
+  transform: translateY(1px);
+}
+
+/* ---------- Start screen ---------- */
+.card {
+  background: var(--panel);
+  color: #2f2f2f;
+  padding: 32px 26px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow:
+    inset 3px 3px 0 #ffffff,
+    inset -3px -3px 0 #5a5a5a,
+    0 0 0 4px var(--outline),
+    0 12px 0 6px rgba(0,0,0,0.35);
+}
+.logo { font-size: 40px; line-height: 1; }
+h1 {
+  font-size: 30px;
+  margin: 14px 0 10px;
+  color: #c9a23a;
+  text-shadow: 3px 3px 0 #6a5418;
+  letter-spacing: 1px;
+}
+.tagline { color: #4a4a4a; margin: 0 0 26px; font-size: 9px; line-height: 1.7; }
+
+#name-form { display: flex; flex-direction: column; gap: 14px; }
+label { font-weight: 400; font-size: 10px; text-align: left; color: #2f2f2f; }
+
+input[type="text"] {
+  font-family: "PixelMC", monospace;
+  font-size: 13px;
+  padding: 14px 12px;
+  border: none;
+  background: #0d0d0d;
+  color: #e8e8e8;
+  outline: none;
+  box-shadow:
+    inset 2px 2px 0 #2b2b2b,
+    inset -2px -2px 0 #2b2b2b,
+    0 0 0 3px #5a5a5a;
+}
+input[type="text"]:focus { box-shadow: inset 2px 2px 0 #2b2b2b, inset -2px -2px 0 #2b2b2b, 0 0 0 3px #ffffff; }
+
+.suggestions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.suggestion {
+  font-family: "PixelMC", monospace;
+  border: none;
+  background: var(--stone);
+  color: var(--txt-light);
+  text-shadow: 1px 1px 0 var(--txt-shadow);
+  padding: 8px 10px;
+  font-size: 9px;
+  cursor: pointer;
+  box-shadow: inset 2px 2px 0 var(--stone-lt), inset -2px -2px 0 var(--stone-dk), 0 0 0 2px var(--outline);
+}
+.suggestion:hover { background: #9a9a9a; color: #ffffcf; }
+
+.btn-primary { font-size: 13px; padding: 16px; margin-top: 4px; }
+
+.credit { margin-top: 22px; color: #d8cdbf; font-size: 8px; line-height: 1.8; opacity: 0.9; max-width: 360px; }
+
+/* ---------- Play screen ---------- */
+#play-screen { justify-content: flex-start; padding-top: 26px; }
+
+.play-header {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 12px;
+}
+#dog-name {
+  font-size: 18px;
+  margin: 0;
+  color: #fff;
+  text-shadow: 2px 2px 0 #2a2a2a;
+}
+.icon-btn {
+  position: absolute;
+  right: 0;
+  width: 40px; height: 40px;
+  font-size: 14px;
+  padding: 0;
+}
+
+/* framed game viewport */
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 128 / 112;
+  margin: 0 auto;
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.25),
+    0 0 0 4px #1d1d1d,
+    0 0 0 8px #3a3a3a;
+}
+#scene { position: absolute; inset: 0; overflow: hidden; }
+.pixel-dog {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+.hearts-layer { display: none; } /* hearts now render inside the canvas */
+
+.mood {
+  color: #fff;
+  text-shadow: 2px 2px 0 #2a2a2a;
+  font-size: 10px;
+  line-height: 1.6;
+  min-height: 34px;
+  max-width: 460px;
+  margin: 16px auto 8px;
+}
+
+.treat-area { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.btn-treat {
+  font-size: 13px;
+  padding: 15px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-treat .treat-emoji { font-size: 16px; image-rendering: pixelated; }
+.btn-treat.ready { animation: blinkglow 1.2s steps(2, jump-none) infinite; }
+@keyframes blinkglow {
+  0%, 100% { color: var(--txt-light); }
+  50%      { color: #ffe66e; }
+}
+.btn-treat:disabled {
+  cursor: default;
+  color: #cfcfcf;
+  box-shadow: inset 3px 3px 0 #6f6f6f, inset -3px -3px 0 #3a3a3a, 0 0 0 3px var(--outline);
+  background: #5f5f5f;
+}
+
+.cooldown { color: #e6dccb; font-size: 8px; min-height: 12px; margin: 0; }
+.counter { color: #d8cdbf; font-size: 8px; margin-top: 18px; }
+.counter #treat-count { color: #ffe66e; }
+
+/* ---------- menu ---------- */
+.menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.menu-card {
+  background: var(--panel);
+  padding: 20px;
+  width: 320px;
+  max-width: 88vw;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow:
+    inset 3px 3px 0 #ffffff,
+    inset -3px -3px 0 #5a5a5a,
+    0 0 0 4px var(--outline);
+}
+.menu-card h3 { margin: 2px 0 8px; text-align: center; font-size: 13px; color: #2f2f2f; }
+.menu-item { font-size: 10px; text-align: left; padding: 13px 12px; }
+.menu-item.subtle {
+  text-align: center;
+  background: #b0b0b0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-treat.ready { animation: none; }
+}
