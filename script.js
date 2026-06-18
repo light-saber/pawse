@@ -10,7 +10,10 @@
   const save = (data) => {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch {}
   };
-  let state = Object.assign({ name: "", treats: 0, sound: true }, load());
+  let state = Object.assign({ name: "", treats: 0, sound: true, breed: 0, toMorph: 0 }, load());
+
+  // random treats-until-next-morph, always fewer than 10
+  const rollMorph = () => 1 + Math.floor(Math.random() * 9);
 
   // ---- Elements ----
   const $ = (id) => document.getElementById(id);
@@ -26,10 +29,12 @@
   const countEl = $("treat-count");
   const heartsLayer = $("hearts-layer");
 
-  // Boot the 3D dog once the play screen is visible (the module may still be loading).
-  const start3D = () => {
-    if (window.PawseDog) window.PawseDog.start();
-    else setTimeout(start3D, 50);
+  // Boot the pixel dog once the play screen is visible (its script may still be loading).
+  const startDog = () => {
+    if (window.PawseDog) {
+      window.PawseDog.start();
+      window.PawseDog.setBreed(state.breed || 0);
+    } else setTimeout(startDog, 50);
   };
 
   // ---- Tunables ----
@@ -152,6 +157,25 @@
     setMood(fill(pick(FED_LINES)));
     playNom();
 
+    // meta layer: every random (<10) treats, the dog spontaneously becomes another breed
+    state.toMorph -= 1;
+    if (state.toMorph <= 0) {
+      const breeds = (window.PawseDog && window.PawseDog.breeds) || [];
+      let next = state.breed || 0;
+      if (breeds.length > 1) {
+        while (next === (state.breed || 0)) next = Math.floor(Math.random() * breeds.length);
+      }
+      state.breed = next;
+      state.toMorph = rollMorph();
+      // let the happy munch read for a beat, then spin + transform
+      setTimeout(() => {
+        if (window.PawseDog) window.PawseDog.morph(next);
+        setMood(`✨ ${state.name} magically turned into a ${breeds[next] || "mystery dog"}! ✨`);
+        scheduleIdle();
+      }, 520);
+    }
+    save(state);
+
     startCooldown();
     scheduleIdle();
   };
@@ -159,6 +183,7 @@
   // ---- Screen flow ----
   const startPlaying = (name) => {
     state.name = name;
+    if (!state.toMorph) state.toMorph = rollMorph();
     save(state);
     dogNameEl.textContent = name;
     countEl.textContent = state.treats;
@@ -167,7 +192,7 @@
     setMood(`Say hello to ${name}! 🐾`);
     startCooldown();
     scheduleIdle();
-    start3D();
+    startDog();
     updateSoundLabel();
   };
 
@@ -209,8 +234,9 @@
 
   $("new-dog-btn").addEventListener("click", () => {
     if (confirm("Start over with a brand new dog? This clears your treat count.")) {
-      state = { name: "", treats: 0, sound: state.sound };
+      state = { name: "", treats: 0, sound: state.sound, breed: 0, toMorph: rollMorph() };
       save(state);
+      if (window.PawseDog) window.PawseDog.setBreed(0);
       nameInput.value = "";
       playScreen.classList.add("hidden");
       startScreen.classList.remove("hidden");
