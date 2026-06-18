@@ -37,9 +37,6 @@
     } else setTimeout(startDog, 50);
   };
 
-  // ---- Tunables ----
-  const COOLDOWN_MS = 9000; // a treat becomes available "once in a while"
-
   // ---- Name suggestions ----
   const NAME_IDEAS = ["Biscuit", "Marley", "Cooper", "Nala", "Goldie", "Waffles", "Mango"];
   NAME_IDEAS.forEach((n) => {
@@ -120,34 +117,15 @@
     }
   };
 
-  // ---- Cooldown ----
-  let readyAt = 0;
-  let cooldownTimer = null;
-  const refreshCooldown = () => {
-    const remaining = readyAt - Date.now();
-    if (remaining <= 0) {
-      treatBtn.disabled = false;
-      treatBtn.classList.add("ready");
-      cooldownEl.textContent = "A treat is ready!";
-      clearInterval(cooldownTimer);
-      cooldownTimer = null;
-    } else {
-      treatBtn.disabled = true;
-      treatBtn.classList.remove("ready");
-      cooldownEl.textContent = `${state.name} is still munching… ${Math.ceil(remaining / 1000)}s`;
-    }
-  };
-  const startCooldown = () => {
-    readyAt = Date.now() + COOLDOWN_MS;
-    clearInterval(cooldownTimer);
-    refreshCooldown();
-    cooldownTimer = setInterval(refreshCooldown, 250);
+  // ---- Treats are instant — no cooldown ----
+  const readyTreat = () => {
+    treatBtn.disabled = false;
+    treatBtn.classList.add("ready");
+    cooldownEl.textContent = "A treat is always ready!";
   };
 
   // ---- Feed ----
   const feed = () => {
-    if (treatBtn.disabled) return;
-
     state.treats += 1;
     countEl.textContent = state.treats;
     save(state);
@@ -176,7 +154,6 @@
     }
     save(state);
 
-    startCooldown();
     scheduleIdle();
   };
 
@@ -190,7 +167,7 @@
     startScreen.classList.add("hidden");
     playScreen.classList.remove("hidden");
     setMood(`Say hello to ${name}! 🐾`);
-    startCooldown();
+    readyTreat();
     scheduleIdle();
     startDog();
     updateSoundLabel();

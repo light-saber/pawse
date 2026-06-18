@@ -3,7 +3,7 @@
 A calm little corner of the internet where you give your dog a treat.
 
 No score. No levels. No timers nagging you. Just a sitting Labrador, your dog's
-name, and a treat you can offer once in a while. **Pawse** is a play on *paws* +
+name, and as many treats as you feel like giving. **Pawse** is a play on *paws* +
 *pause* — it's meant to be a tiny break in your day.
 
 ## Features
@@ -15,7 +15,7 @@ name, and a treat you can offer once in a while. **Pawse** is a play on *paws* +
 - **Animated:** the dog breathes, blinks, twitches its ears and wags its tail,
   and does a happy hop with its tongue out (plus floating Minecraft hearts) every
   time you give it a treat.
-- A gentle **"once in a while" cooldown** between treats, so it stays relaxing.
+- Treats are **instant** — give your dog as many as you like, whenever you like.
 - Full **Minecraft GUI look** — pixel font, beveled stone buttons and panels, and
   the classic darkened dirt menu background.
 - Everything is saved in your browser (`localStorage`) — your dog and treat
@@ -85,7 +85,6 @@ pawse.example.com {
 
 ## Make it your own
 
-- **Treat pace:** change `COOLDOWN_MS` near the top of `script.js`.
 - **Dog & world colors:** edit the `C` palette at the top of `pixeldog.js`
   (try a chocolate or black Lab by changing `fur` / `furLt` / `furSh`).
 - **What your dog says:** edit `IDLE_LINES` and `FED_LINES` in `script.js`.
